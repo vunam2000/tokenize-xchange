@@ -1,5 +1,5 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Module, MiddlewareConsumer } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TerminusModule } from '@nestjs/terminus';
 import * as Joi from '@hapi/joi';
 import { APP_FILTER } from '@nestjs/core';
@@ -8,12 +8,15 @@ import { LoggerModule } from './modules/log/logs.module';
 import { DatabaseModule } from './modules/database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/user/users.module';
+import { CrawlDataModule } from './modules/crawl-data/crawlData.module';
 
 import LoggerMiddleware from './configs/middlewares/logger.middleware';
 import { AllExceptionsFilter } from './configs/filters/catchError';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CacheModule } from './modules/cache/cache.module';
+import { GraphTokenModule } from './modules/graph-token/graphToken.module';
 
 @Module({
   providers: [
@@ -43,11 +46,18 @@ import { AppService } from './app.service';
         JWT_EXPIRATION_TIME: Joi.string().required(),
         JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+
+        CACHE_TTL: Joi.string().required(),
+        CACHE_HOST: Joi.string().required(),
+        CACHE_PORT: Joi.string().required(),
       }),
     }),
     DatabaseModule,
+    CacheModule,
+    CrawlDataModule,
     AuthModule,
     UsersModule,
+    GraphTokenModule,
   ],
   controllers: [AppController],
 })

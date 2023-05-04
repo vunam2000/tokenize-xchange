@@ -8,6 +8,7 @@ import { AllExceptionsFilter } from './configs/filters/catchError';
 import CustomLogger from './modules/log/customLogger';
 import getLogLevels from './utils/getLogLevels';
 import { TransformInterceptor } from './configs/interceptors/transform.interceptor';
+import { CrawlDataService } from './modules/crawl-data/crawlData.service';
 
 async function bootstrap() {
   // Logger
@@ -16,6 +17,9 @@ async function bootstrap() {
     bufferLogs: true,
   });
   app.useLogger(app.get(CustomLogger));
+
+  const cacheService = app.get(CrawlDataService);
+  cacheService.crawlBinanceBookTicket();
 
   app.useGlobalPipes(
     new ValidationPipe({
