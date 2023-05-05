@@ -1,13 +1,21 @@
 import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
-import { Cache } from 'cache-manager';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+
 import { CrawlDataService } from '../crawl-data/crawlData.service';
 import { GraphEdge } from './graph';
+import { TriangleArbitrage } from '../../entities';
 
 @Injectable()
 export class GraphTokenService {
   private graphEdges: GraphEdge[];
 
-  constructor(private readonly crawlDataService: CrawlDataService) {
+  constructor(
+    private readonly crawlDataService: CrawlDataService,
+
+    @InjectRepository(TriangleArbitrage)
+    private triangleArbitrageRepository: Repository<TriangleArbitrage>,
+  ) {
     this.graphEdges = [];
   }
 
@@ -94,6 +102,12 @@ export class GraphTokenService {
     if (profitRate > 1) {
       console.log('Triangle Arbitrage detected: ', triangleArbitrage);
       console.log('Profit rate: ', profitRate);
+
+      const newTriangleArbitrage = new TriangleArbitrage();
+      newTriangleArbitrage.triangleTokens = triangleArbitrage;
+      newTriangleArbitrage.profitRate = profitRate;
+
+      await this.triangleArbitrageRepository.save(newTriangleArbitrage);
     }
   }
 }
