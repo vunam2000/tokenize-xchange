@@ -1,11 +1,12 @@
 ## Description
 
-This reposity is backend for Blogs
+This reposity is backend for Detect triangle arbitrage
 
 Features done:
 
-- CRUD article
-- Text search by ElasticSearch
+- Crawl book ticker with binance api
+- Build token graph
+- Detect triangle arbitrage
 
 Swaggers: /api
 
@@ -20,9 +21,6 @@ $ npm install
 ## Running the app
 
 ```bash
-# Seed data
-$ npm run seed
-
 # development
 $ npm run dev
 
