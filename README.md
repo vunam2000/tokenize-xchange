@@ -4,9 +4,9 @@ This reposity is backend for Detect triangle arbitrage
 
 Features done:
 
-- Crawl book ticker with binance api
+- Crawl book ticker with binance api and store results in Redis
 - Build token graph
-- Detect triangle arbitrage
+- Detect triangle arbitrage and store results in PostgreSQL
 
 Swaggers: /api
 
