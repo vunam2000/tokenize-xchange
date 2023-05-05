@@ -9,6 +9,8 @@ import CustomLogger from './modules/log/customLogger';
 import getLogLevels from './utils/getLogLevels';
 import { TransformInterceptor } from './configs/interceptors/transform.interceptor';
 import { CrawlDataService } from './modules/crawl-data/crawlData.service';
+import { GraphTokenService } from './modules/graph-token/graphToken.service';
+import { TOKEN_PAIRS, TRIANGLE_ARBITRAGES } from './configs/constants/token';
 
 async function bootstrap() {
   // Logger
@@ -18,8 +20,24 @@ async function bootstrap() {
   });
   app.useLogger(app.get(CustomLogger));
 
-  const cacheService = app.get(CrawlDataService);
-  cacheService.crawlBinanceBookTicket();
+  // Crawl data
+  const crawlDataService = app.get(CrawlDataService);
+  crawlDataService.crawlBinanceBookTicker();
+
+  // Update graph
+  const graphTokenService = app.get(GraphTokenService);
+  setInterval(() => {
+    TOKEN_PAIRS.forEach((token) => {
+      graphTokenService.updateGraphEdge(token);
+    });
+  }, 2500);
+
+  // Detect triangle arbitrage
+  setInterval(() => {
+    TRIANGLE_ARBITRAGES.forEach((triangleArbitrage) => {
+      graphTokenService.detectTriangleArbitrage(triangleArbitrage);
+    });
+  }, 2500);
 
   app.useGlobalPipes(
     new ValidationPipe({

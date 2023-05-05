@@ -1,15 +1,15 @@
 version: "3"
 services:
   nestjs-api:
-    image: blog-api
+    image: tokenize-xchange
     env_file:
       - .env
     ports:
       - "9000:9000"
     networks:
-      - blog-api
+      - tokenize-xchange
  
 networks:
-  blog-api:
+  tokenize-xchange:
     driver: bridge
     

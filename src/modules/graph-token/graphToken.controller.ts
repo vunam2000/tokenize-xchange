@@ -13,13 +13,13 @@ import { GraphTokenService } from './graphToken.service';
 export class GraphTokenController {
   constructor(private readonly graphTokenService: GraphTokenService) {}
 
-  @Get('/book-ticket/:tokenPair')
-  async getBookTicketOfTokenPair(@Param() params) {
+  @Get('/book-ticker/:tokenPair')
+  async getBookTickerOfTokenPair(@Param() params) {
     const { tokenPair } = params;
-    const bookTicket = await this.graphTokenService.getBookTicketOfTokenPair(
+    const bookTicker = await this.graphTokenService.getBookTickerOfTokenPair(
       tokenPair,
     );
 
-    return bookTicket;
+    return bookTicker;
   }
 }
