@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -8,6 +8,7 @@ import { TriangleArbitrage } from '../../entities';
 
 @Injectable()
 export class GraphTokenService {
+  private readonly logger = new Logger(GraphTokenService.name);
   private graphEdges: GraphEdge[];
 
   constructor(
@@ -91,17 +92,11 @@ export class GraphTokenService {
     const firstTokenQntAfter = bestFromThirdToFirst.calculateQnt(thirdTokenQnt);
 
     const profitRate = firstTokenQntAfter / firstTokenQnt;
-    console.log(
-      'Traverse: ',
-      triangleArbitrage,
-      profitRate,
-      firstTokenQnt,
-      secondTokenQnt,
-      thirdTokenQnt,
-    );
+    this.logger.log('Traverse: ' + triangleArbitrage);
+
     if (profitRate > 1) {
-      console.log('Triangle Arbitrage detected: ', triangleArbitrage);
-      console.log('Profit rate: ', profitRate);
+      this.logger.log('Triangle Arbitrage detected: ' + triangleArbitrage);
+      this.logger.log('Profit rate: ' + profitRate);
 
       const newTriangleArbitrage = new TriangleArbitrage();
       newTriangleArbitrage.triangleTokens = triangleArbitrage;
