@@ -22,7 +22,11 @@ export class CrawlDataService {
   }
 
   async storeDataToCache(key: string, value: any) {
-    await this.cacheManager.set(key, value);
+    try {
+      await this.cacheManager.set(key, value);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async getDataFromCache(key: string): Promise<{

@@ -47,7 +47,6 @@ import { GraphTokenModule } from './modules/graph-token/graphToken.module';
         JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
 
-        CACHE_TTL: Joi.string().required(),
         CACHE_HOST: Joi.string().required(),
         CACHE_PORT: Joi.string().required(),
       }),
