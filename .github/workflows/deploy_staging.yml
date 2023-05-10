@@ -30,8 +30,8 @@ jobs:
         env:
           REGISTRY: ${{ steps.login-ecr-public.outputs.registry }}
           REGISTRY_ALIAS: n1g0d4p1
-          REPOSITORY: blog-api
-          IMAGE_TAG: blog-api
+          REPOSITORY: tokenize
+          IMAGE_TAG: tokenize
         run: |
           docker build -t $IMAGE_TAG .
           docker tag $IMAGE_TAG:latest $REGISTRY/$REGISTRY_ALIAS/$IMAGE_TAG:latest
@@ -51,4 +51,4 @@ jobs:
 
       - name: Update ECS service
         run: |
-          aws ecs update-service --cluster blog_api_cluster --service blog_api_service_v1 --task-definition blog_api_task:5 --force-new-deployment
+          aws ecs update-service --cluster tokenize_cluster --service tokenize_service --task-definition tokenize_task --force-new-deployment
