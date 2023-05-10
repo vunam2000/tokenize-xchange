@@ -26,6 +26,10 @@ export class GraphTokenService {
     return await this.crawlDataService.getDataFromCache(tokenPair);
   }
 
+  async createBookTickerOfTokenPair(tokenPair: string) {
+    return await this.crawlDataService.storeDataToCache(tokenPair, tokenPair);
+  }
+
   async updateGraphEdge(tokenPair: string[]) {
     const symbol = tokenPair[0] + tokenPair[1];
     const data = await this.crawlDataService.getDataFromCache(symbol);

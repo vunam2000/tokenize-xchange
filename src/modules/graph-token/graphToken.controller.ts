@@ -5,6 +5,7 @@ import {
   Inject,
   Injectable,
   Param,
+  Post,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { GraphTokenService } from './graphToken.service';
@@ -17,6 +18,16 @@ export class GraphTokenController {
   async getBookTickerOfTokenPair(@Param() params) {
     const { tokenPair } = params;
     const bookTicker = await this.graphTokenService.getBookTickerOfTokenPair(
+      tokenPair,
+    );
+
+    return bookTicker;
+  }
+
+  @Post('/book-ticker/:tokenPair')
+  async createBookTickerOfTokenPair(@Param() params) {
+    const { tokenPair } = params;
+    const bookTicker = await this.graphTokenService.createBookTickerOfTokenPair(
       tokenPair,
     );
 
