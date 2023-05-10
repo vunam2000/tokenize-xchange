@@ -55,6 +55,8 @@ export class CrawlDataService {
 
     this.logger.log('Crawl ticker: ' + symbols);
     this.client.ws.bookTicker(symbols, async (ticker) => {
+      this.logger.log(`Ticker: ${ticker}`);
+
       await this.storeDataToCache(ticker?.symbol, ticker);
     });
   }
