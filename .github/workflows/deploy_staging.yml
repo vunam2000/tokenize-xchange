@@ -51,4 +51,4 @@ jobs:
 
       - name: Update ECS service
         run: |
-          aws ecs update-service --cluster tokenize_cluster --service tokenize_service --task-definition tokenize_task:2 --force-new-deployment
+          aws ecs update-service --cluster tokenize_cluster --service tokenize_service_6 --task-definition tokenize_task:2 --force-new-deployment

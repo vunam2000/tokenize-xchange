@@ -22,11 +22,13 @@ async function bootstrap() {
 
   // Crawl data
   const crawlDataService = app.get(CrawlDataService);
+  console.log(crawlDataService);
   crawlDataService.crawlBinanceBookTicker();
 
   // Update graph
   const graphTokenService = app.get(GraphTokenService);
   setInterval(() => {
+    console.log('updateGraphEdge');
     TOKEN_PAIRS.forEach((token) => {
       graphTokenService.updateGraphEdge(token);
     });
@@ -34,6 +36,7 @@ async function bootstrap() {
 
   // Detect triangle arbitrage
   setInterval(() => {
+    console.log('detectTriangleArbitrage', TRIANGLE_ARBITRAGES);
     TRIANGLE_ARBITRAGES.forEach((triangleArbitrage) => {
       graphTokenService.detectTriangleArbitrage(triangleArbitrage);
     });
