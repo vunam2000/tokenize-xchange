@@ -1,4 +1,3 @@
-import { CacheStore } from '@nestjs/cache-manager';
 import { Module, CacheModule as NestCacheModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
@@ -20,7 +19,7 @@ import { redisStore } from 'cache-manager-redis-store';
           },
         });
         return {
-          store: store as unknown as CacheStore,
+          store: store,
           ttl: 600,
         };
       },
