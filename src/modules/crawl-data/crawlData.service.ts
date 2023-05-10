@@ -4,6 +4,7 @@ import {
   HttpStatus,
   Inject,
   Injectable,
+  Logger,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import Binance from 'binance-api-node';
@@ -11,6 +12,7 @@ import { TOKEN_PAIRS } from '../../configs/constants/token';
 
 @Injectable()
 export class CrawlDataService {
+  private readonly logger = new Logger(CrawlDataService.name);
   private client;
 
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
@@ -45,6 +47,7 @@ export class CrawlDataService {
       symbols.push(symbol);
     }
 
+    this.logger.log('Crawl ticker: ' + symbols);
     this.client.ws.bookTicker(symbols, async (ticker) => {
       this.storeDataToCache(ticker?.symbol, ticker);
     });

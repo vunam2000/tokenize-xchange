@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import { CrawlDataService } from '../crawl-data/crawlData.service';
 import { GraphEdge } from './graph';
 import { TriangleArbitrage } from '../../entities';
+import { Cron, CronExpression } from '@nestjs/schedule';
+import { TOKEN_PAIRS, TRIANGLE_ARBITRAGES } from 'src/configs/constants/token';
 
 @Injectable()
 export class GraphTokenService {
@@ -104,5 +106,21 @@ export class GraphTokenService {
 
       await this.triangleArbitrageRepository.save(newTriangleArbitrage);
     }
+  }
+
+  @Cron('*/2 * * * * *')
+  async updateGraphEdgeTask() {
+    this.logger.log('updateGraphEdge');
+    TOKEN_PAIRS.forEach((token) => {
+      this.updateGraphEdge(token);
+    });
+  }
+
+  @Cron('*/2 * * * * *')
+  async detectTriangleArbitrageTask() {
+    this.logger.log('detectTriangleArbitrage: ' + TRIANGLE_ARBITRAGES);
+    TRIANGLE_ARBITRAGES.forEach((triangleArbitrage) => {
+      this.detectTriangleArbitrage(triangleArbitrage);
+    });
   }
 }

@@ -1,4 +1,8 @@
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
@@ -9,10 +13,10 @@ import CustomLogger from './modules/log/customLogger';
 import getLogLevels from './utils/getLogLevels';
 import { TransformInterceptor } from './configs/interceptors/transform.interceptor';
 import { CrawlDataService } from './modules/crawl-data/crawlData.service';
-import { GraphTokenService } from './modules/graph-token/graphToken.service';
-import { TOKEN_PAIRS, TRIANGLE_ARBITRAGES } from './configs/constants/token';
 
 async function bootstrap() {
+  const logger = new Logger('Main');
+
   // Logger
   const app = await NestFactory.create(AppModule, {
     logger: getLogLevels(process.env.NODE_ENV === 'production'),
@@ -22,25 +26,8 @@ async function bootstrap() {
 
   // Crawl data
   const crawlDataService = app.get(CrawlDataService);
-  console.log(crawlDataService);
+  logger.log('crawlDataService');
   crawlDataService.crawlBinanceBookTicker();
-
-  // Update graph
-  const graphTokenService = app.get(GraphTokenService);
-  setInterval(() => {
-    console.log('updateGraphEdge');
-    TOKEN_PAIRS.forEach((token) => {
-      graphTokenService.updateGraphEdge(token);
-    });
-  }, 2500);
-
-  // Detect triangle arbitrage
-  setInterval(() => {
-    console.log('detectTriangleArbitrage', TRIANGLE_ARBITRAGES);
-    TRIANGLE_ARBITRAGES.forEach((triangleArbitrage) => {
-      graphTokenService.detectTriangleArbitrage(triangleArbitrage);
-    });
-  }, 2500);
 
   app.useGlobalPipes(
     new ValidationPipe({

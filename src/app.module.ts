@@ -17,6 +17,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CacheModule } from './modules/cache/cache.module';
 import { GraphTokenModule } from './modules/graph-token/graphToken.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   providers: [
@@ -27,6 +28,7 @@ import { GraphTokenModule } from './modules/graph-token/graphToken.module';
     },
   ],
   imports: [
+    ScheduleModule.forRoot(),
     TerminusModule,
     LoggerModule,
     ConfigModule.forRoot({
