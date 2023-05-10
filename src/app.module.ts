@@ -51,6 +51,9 @@ import { ScheduleModule } from '@nestjs/schedule';
 
         CACHE_HOST: Joi.string().required(),
         CACHE_PORT: Joi.string().required(),
+
+        BINANCE_API_KEY: Joi.string().required(),
+        BINANCE_SECRET_KEY: Joi.string().required(),
       }),
     }),
     DatabaseModule,

@@ -10,17 +10,21 @@ import { Cache } from 'cache-manager';
 import Binance from 'binance-api-node';
 import { TOKEN_PAIRS } from '../../configs/constants/token';
 import { Cron } from '@nestjs/schedule';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class CrawlDataService {
   private readonly logger = new Logger(CrawlDataService.name);
   private client;
 
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {
+  constructor(
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
+    private configService: ConfigService,
+  ) {
     // Authenticated client, can make signed calls
     this.client = Binance({
-      apiKey: process.env.BINANCE_API_KEY,
-      apiSecret: process.env.BINANCE_SECRET_KEY,
+      apiKey: this.configService.get('BINANCE_API_KEY'),
+      apiSecret: this.configService.get('BINANCE_SECRET_KEY'),
     });
   }
 
