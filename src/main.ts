@@ -15,19 +15,12 @@ import { TransformInterceptor } from './configs/interceptors/transform.intercept
 import { CrawlDataService } from './modules/crawl-data/crawlData.service';
 
 async function bootstrap() {
-  const logger = new Logger('Main');
-
   // Logger
   const app = await NestFactory.create(AppModule, {
     logger: getLogLevels(process.env.NODE_ENV === 'production'),
     bufferLogs: true,
   });
   app.useLogger(app.get(CustomLogger));
-
-  // Crawl data
-  const crawlDataService = app.get(CrawlDataService);
-  logger.log('crawlDataService');
-  crawlDataService.crawlBinanceBookTicker();
 
   app.useGlobalPipes(
     new ValidationPipe({

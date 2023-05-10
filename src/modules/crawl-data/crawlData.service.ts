@@ -9,6 +9,7 @@ import {
 import { Cache } from 'cache-manager';
 import Binance from 'binance-api-node';
 import { TOKEN_PAIRS } from '../../configs/constants/token';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class CrawlDataService {
@@ -27,7 +28,7 @@ export class CrawlDataService {
     try {
       await this.cacheManager.set(key, value);
     } catch (err) {
-      console.log(err);
+      this.logger.error(err);
     }
   }
 
@@ -40,6 +41,7 @@ export class CrawlDataService {
     return await this.cacheManager.get(key);
   }
 
+  @Cron('*/1 * * * * *')
   async crawlBinanceBookTicker() {
     const symbols = [];
     for (const tokenPair of TOKEN_PAIRS) {
